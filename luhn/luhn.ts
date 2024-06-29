@@ -5,19 +5,20 @@ export function valid(digitString: string): boolean {
     return false;
   }
 
-  let sum = 0;
-  let digitCount = 0;
-  for (let i = digits.length - 1; i >= 0; i--) {
-    digitCount++;
-    let digit = parseInt(digits[i]);
-    if (digitCount % 2 === 0) {
-      digit *= 2;
-      if (digit > 9) {
-        digit -= 9;
-      }
-    }
-    sum += digit;
+  if (digits.length <= 1) {
+    return false;
   }
 
-  return digitCount > 1 && sum % 10 === 0;
+  const sum = [...digits]
+    .reverse()
+    .map(Number)
+    .reduce((acc: number, digit: number, index: number) => {
+      if (index % 2 === 1) {
+        const doubled = digit * 2;
+        return acc + (doubled > 9 ? doubled - 9 : doubled);
+      }
+      return acc + digit;
+    });
+
+  return sum % 10 === 0;
 }
