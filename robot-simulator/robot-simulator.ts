@@ -39,6 +39,7 @@ export class Robot {
           this.turnRight();
           break;
         case "A":
+          this.advance();
           break;
         default:
           throw new InvalidInputError("Invalid instruction");
@@ -74,5 +75,26 @@ export class Robot {
     }
 
     this.direction = allDirections[index + 1];
+  }
+
+  private advance(): void {
+    const allDirections = this.getAllDirections();
+    let index = allDirections.indexOf(this.direction);
+    switch (index) {
+      case 0:
+        this.coords[1]++;
+        break;
+      case 1:
+        this.coords[0]++;
+        break;
+      case 2:
+        this.coords[1]--;
+        break;
+      case 3:
+        this.coords[0]--;
+        break;
+      default:
+        throw new InvalidInputError("Invalid direction");
+    }
   }
 }
