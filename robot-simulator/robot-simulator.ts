@@ -8,6 +8,13 @@ export class InvalidInputError extends Error {
 type Direction = "north" | "east" | "south" | "west";
 type Coordinates = [number, number];
 
+const movementManual = {
+  north: { left: "west", right: "east", advance: [0, 1] },
+  east: { left: "north", right: "south", advance: [1, 0] },
+  south: { left: "east", right: "west", advance: [0, -1] },
+  west: { left: "south", right: "north", advance: [-1, 0] }
+};
+
 export class Robot {
   private direction: Direction = "north";
   private coords: Coordinates = [0, 0];
@@ -56,45 +63,16 @@ export class Robot {
   }
 
   private turnLeft(): void {
-    const allDirections = this.getAllDirections();
-    let index = allDirections.indexOf(this.direction);
-    if (index - 1 < 0) {
-      this.direction = allDirections[allDirections.length - 1];
-      return;
-    }
-
-    this.direction = allDirections[index - 1];
+    this.direction = movementManual[this.direction].left as Direction;
   }
 
   private turnRight(): void {
-    const allDirections = this.getAllDirections();
-    let index = allDirections.indexOf(this.direction);
-    if (index + 1 >= allDirections.length) {
-      this.direction = allDirections[0];
-      return;
-    }
-
-    this.direction = allDirections[index + 1];
+    this.direction = movementManual[this.direction].right as Direction;
   }
 
   private advance(): void {
-    const allDirections = this.getAllDirections();
-    let index = allDirections.indexOf(this.direction);
-    switch (index) {
-      case 0:
-        this.coords[1]++;
-        break;
-      case 1:
-        this.coords[0]++;
-        break;
-      case 2:
-        this.coords[1]--;
-        break;
-      case 3:
-        this.coords[0]--;
-        break;
-      default:
-        throw new InvalidInputError("Invalid direction");
-    }
+    const movement = movementManual[this.direction].advance;
+    this.coords[0] += movement[0];
+    this.coords[1] += movement[1];
   }
 }
