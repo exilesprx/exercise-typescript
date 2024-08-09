@@ -43,7 +43,7 @@ describe('Robot', () => {
       expect(robot.coordinates).toEqual([-1, -1])
     })
 
-    xit('invalid robot bearing', () => {
+    it('invalid robot bearing', () => {
       const robot = new Robot()
 
       expect(InvalidInputError.prototype).toBeInstanceOf(Error)
