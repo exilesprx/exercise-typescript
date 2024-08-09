@@ -21,7 +21,7 @@ export class Robot {
   }
 
   place({ x, y, direction }: { x: number; y: number; direction: string }) {
-    if (! this.isValidDirection(direction)) {
+    if (!this.isValidDirection(direction)) {
       throw new InvalidInputError("Invalid coordinates");
     }
 
@@ -30,10 +30,49 @@ export class Robot {
   }
 
   evaluate(instructions: string) {
-    throw new Error("Remove this statement and implement this function");
+    for (const instruction of instructions) {
+      switch (instruction) {
+        case "L":
+          this.turnLeft();
+          break;
+        case "R":
+          this.turnRight();
+          break;
+        case "A":
+          break;
+        default:
+          throw new InvalidInputError("Invalid instruction");
+      }
+    }
+  }
+
+  private getAllDirections(): Direction[] {
+    return ["north", "east", "south", "west"];
   }
 
   private isValidDirection(value: any): value is Direction {
-    return ['north', 'east', 'south', 'west'].includes(value);
+    return this.getAllDirections().includes(value);
+  }
+
+  private turnLeft(): void {
+    const allDirections = this.getAllDirections();
+    let index = allDirections.indexOf(this.direction);
+    if (index - 1 < 0) {
+      this.direction = allDirections[allDirections.length - 1];
+      return;
+    }
+
+    this.direction = allDirections[index - 1];
+  }
+
+  private turnRight(): void {
+    const allDirections = this.getAllDirections();
+    let index = allDirections.indexOf(this.direction);
+    if (index + 1 >= allDirections.length) {
+      this.direction = allDirections[0];
+      return;
+    }
+
+    this.direction = allDirections[index + 1];
   }
 }
