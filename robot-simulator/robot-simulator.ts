@@ -12,7 +12,7 @@ const movementManual = {
   north: { left: "west", right: "east", advance: [0, 1] },
   east: { left: "north", right: "south", advance: [1, 0] },
   south: { left: "east", right: "west", advance: [0, -1] },
-  west: { left: "south", right: "north", advance: [-1, 0] }
+  west: { left: "south", right: "north", advance: [-1, 0] },
 };
 
 export class Robot {
@@ -54,12 +54,8 @@ export class Robot {
     }
   }
 
-  private getAllDirections(): Direction[] {
-    return ["north", "east", "south", "west"];
-  }
-
   private isValidDirection(value: any): value is Direction {
-    return this.getAllDirections().includes(value);
+    return ["north", "east", "south", "west"].includes(value);
   }
 
   private turnLeft(): void {
